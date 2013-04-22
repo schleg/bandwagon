@@ -9,5 +9,9 @@ FactoryGirl.define do
   end
   factory :admin, parent: :user
   factory :signed_out_user, parent: :user
+  factory :confirmed_user, parent: :user do
+    confirmed_at { Date.today }
+  end
+  factory :visitor, parent: :user
 end
 
