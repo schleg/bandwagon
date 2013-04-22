@@ -2,7 +2,7 @@
 
 def create_visitor
   @visitor ||= { :name => "Testy McUserton", :email => "example@example.com",
-    :password => "changeme", :password_confirmation => "changeme" }
+    :password => "password", :password_confirmation => "password" }
 end
 
 def find_user
