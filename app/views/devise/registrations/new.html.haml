@@ -3,6 +3,7 @@
     %legend Sign Up
     = f.error_notification
     .form-inputs
+      = f.input :name
       = f.input :email, :required => true, :autofocus => true
       = f.input :password, :required => true
       = f.input :password_confirmation, :required => true
