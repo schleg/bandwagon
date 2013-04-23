@@ -1,6 +1,6 @@
 = simple_form_for @tshirt do |f|
   %fieldset
-    %legend Create a Tee
+    %legend Update Your Tee
     = f.input :title
     = f.input :description, input_html: { rows: 4 }
     .control-group
@@ -11,9 +11,15 @@
           %input#artwork-file.input-large{type: "text", value: "#{@tshirt.art_file_name}"}
           %a.btn{onclick: "$('#tshirt_artwork').click();"} Browse
         = f.hidden_field :artwork_cache
+        - if @tshirt.artwork.present?
+          .row
+            = image_tag @tshirt.artwork, class: "span4"
         :javascript
           $('#tshirt_artwork').change(function() {
             $('#artwork-file').val($(this).val().replace(/C:\\fakepath\\/,''));
           });
     .form-actions
-      = f.submit "Create My Tee", class: "btn btn-primary"
+      = f.submit "Update My Tee", class: "btn btn-primary"
+      or
+      = link_to "Delete Tee", @tshirt, method: :delete, class: "btn btn-danger", confirm: "Are you sure?"
+

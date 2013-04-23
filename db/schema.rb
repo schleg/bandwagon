@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130422063218) do
+ActiveRecord::Schema.define(:version => 20130423040257) do
 
   create_table "roles", :force => true do |t|
     t.string   "name"
@@ -29,9 +29,17 @@ ActiveRecord::Schema.define(:version => 20130422063218) do
     t.text     "description"
     t.string   "state"
     t.integer  "user_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.string   "artwork"
+    t.string   "art_file_name"
+    t.string   "art_content_type"
+    t.integer  "art_file_size"
+    t.datetime "art_updated_at"
+    t.string   "slug"
   end
+
+  add_index "tshirts", ["slug"], :name => "index_tshirts_on_slug", :unique => true
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false

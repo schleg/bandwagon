@@ -1,0 +1,22 @@
+.row
+  .span12.alert
+    This a a preview of <strong>#{@tshirt.title}</strong>. To make changes
+    click the "Change My Tee" button. When you're changes are complete click 
+    "Submit for Approval."
+.row
+  .span12
+    .btn-group
+      = link_to "Change My Tee", edit_tshirt_path(@tshirt), class: "btn"
+      = link_to "Submit for Approval", edit_tshirt_path(@tshirt), class: "btn"
+%hr/
+.row
+  .span6
+    %h2
+      = @tshirt.title
+    %p
+      - if @tshirt.description.present?
+        = @tshirt.description
+      - else
+        No Description
+    - if @tshirt.artwork.present?
+      = image_tag @tshirt.artwork
