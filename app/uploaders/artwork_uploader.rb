@@ -2,8 +2,6 @@
 
 class ArtworkUploader < CarrierWave::Uploader::Base
 
-  include CarrierWave::MiniMagick
-
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
   include CarrierWave::MiniMagick
@@ -14,6 +12,19 @@ class ArtworkUploader < CarrierWave::Uploader::Base
 
   version :thumb do
     process :resize_to_fit => [100,100]
+  end
+
+  version :transfer_11x17 do
+    process :composite_for_transfer
+  end
+
+  def composite_for_transfer
+    manipulate! do |img|
+      transfer = ::MiniMagick::Image.open(Rails.root.join('public/images/11x17.png'))
+      img = transfer.composite(::MiniMagick::Image.open(model.artwork.file.path, "png")) do |c|
+        c.gravity "center"
+      end
+    end
   end
 
   # Include the Sprockets helpers for Rails 3.1+ asset pipeline compatibility:
