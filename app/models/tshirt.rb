@@ -4,4 +4,5 @@ class Tshirt < ActiveRecord::Base
   friendly_id :title, use: :slugged
   validates_presence_of :title
   mount_uploader :artwork, ArtworkUploader
+  belongs_to :user
 end

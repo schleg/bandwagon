@@ -1,0 +1,12 @@
+%h2
+  My Tees
+%hr/
+- current_user.tshirts.each do |tshirt|
+  .row
+    .offset1.span5
+      = link_to(image_tag(tshirt.artwork.preview), edit_tshirt_path(tshirt))
+    .offset1.span5
+      %h3
+        = tshirt.title
+      %h4
+        0 Pre-Orders

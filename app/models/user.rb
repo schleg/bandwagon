@@ -12,4 +12,6 @@ class User < ActiveRecord::Base
 
   before_create lambda { send(:skip_confirmation!) if Rails.env == 'test' }
 
+  has_many :tshirts
+
 end
