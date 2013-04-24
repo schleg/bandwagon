@@ -7,6 +7,7 @@ class ArtworkUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
 
   version :preview do
+    process :resize_to_limit => [792, 1224]
     process :composite_for_preview
   end
 
@@ -15,13 +16,14 @@ class ArtworkUploader < CarrierWave::Uploader::Base
   end
 
   version :transfer_11x17 do
+    process :resize_to_limit => [792, 1224]
     process :composite_for_transfer
   end
 
   def composite_for_transfer
     manipulate! do |img|
       transfer = ::MiniMagick::Image.open(Rails.root.join('public/images/11x17.png'))
-      img = transfer.composite(::MiniMagick::Image.open(model.artwork.file.path, "png")) do |c|
+      img = transfer.composite(img) do |c|
         c.gravity "center"
       end
     end
@@ -30,7 +32,7 @@ class ArtworkUploader < CarrierWave::Uploader::Base
   def composite_for_preview
     manipulate! do |img|
       tshirt = ::MiniMagick::Image.open(Rails.root.join('public/images/Tshirt.png'))
-      img = tshirt.composite(::MiniMagick::Image.open(model.artwork.file.path, "png")) do |c|
+      img = tshirt.composite(img) do |c|
         c.gravity "center"
       end
     end
