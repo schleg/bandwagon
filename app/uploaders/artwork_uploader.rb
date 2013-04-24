@@ -7,7 +7,7 @@ class ArtworkUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
 
   version :preview do
-    process :resize_to_fit => [636,460]
+    process :composite_for_preview
   end
 
   version :thumb do
@@ -27,6 +27,15 @@ class ArtworkUploader < CarrierWave::Uploader::Base
     end
   end
 
+  def composite_for_preview
+    manipulate! do |img|
+      tshirt = ::MiniMagick::Image.open(Rails.root.join('public/images/Tshirt.png'))
+      img = tshirt.composite(::MiniMagick::Image.open(model.artwork.file.path, "png")) do |c|
+        c.gravity "center"
+      end
+    end
+  end
+
   # Include the Sprockets helpers for Rails 3.1+ asset pipeline compatibility:
   # include Sprockets::Helpers::RailsHelper
   # include Sprockets::Helpers::IsolatedHelper
@@ -38,7 +47,7 @@ class ArtworkUploader < CarrierWave::Uploader::Base
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}-#{model.slug}"
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:

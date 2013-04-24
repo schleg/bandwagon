@@ -1,10 +1,10 @@
 = simple_form_for @tshirt do |f|
   %fieldset
     %legend Create a Tee
-    = f.input :title
-    = f.input :description, input_html: { rows: 4 }
+    = f.input :title, label: "Tee Title"
+    = f.input :description, label: "Tee Description", input_html: { rows: 4 }
     .control-group
-      = f.label :artwork
+      = f.label :artwork, "Artwork File"
       .controls
         = f.file_field :artwork, style: 'display: none'
         .input-append

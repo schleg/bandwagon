@@ -1,25 +1,48 @@
-= simple_form_for @tshirt do |f|
-  %fieldset
-    %legend Update Your Tee
-    = f.input :title
-    = f.input :description, input_html: { rows: 4 }
-    .control-group
-      = f.label :artwork
-      .controls
-        = f.file_field :artwork, style: 'display: none'
-        .input-append
-          %input#artwork-file.input-large{type: "text", value: "#{@tshirt.art_file_name}"}
-          %a.btn{onclick: "$('#tshirt_artwork').click();"} Browse
-        = f.hidden_field :artwork_cache
-        - if @tshirt.artwork.present?
-          .row
-            = image_tag @tshirt.artwork, class: "span4"
-        :javascript
-          $('#tshirt_artwork').change(function() {
-            $('#artwork-file').val($(this).val().replace(/C:\\fakepath\\/,''));
-          });
-    .form-actions
-      = f.submit "Update My Tee", class: "btn btn-primary"
-      or
-      = link_to "Delete Tee", @tshirt, method: :delete, class: "btn btn-danger", confirm: "Are you sure?"
+.row
+  .span6
+    = simple_form_for @tshirt do |f|
+      %fieldset
+        %legend Update Your Tee
+        .alert
+          After you've made your changes click <strong>&ldquo;Preview Pre-Order&rdquo;</strong>
+        = f.input :title, label: "Tee Title", input_html: { class: "span6" }
+        = f.input :description, label: "Tee Description", input_html: { rows: 4, class: "span6" }
+        .control-group
+          = f.label :artwork, "Artwork File"
+          .controls
+            = f.file_field :artwork, style: 'display: none'
+            .input-append
+              %input#artwork-file.input-large{type: "text", value: "#{@tshirt.art_file_name}"}
+              %a.btn{onclick: "$('#tshirt_artwork').click();"} Browse
+            .help-block
+              Updating this source artwork file will also update the original
+              image and preview images.
+            = f.hidden_field :artwork_cache
+            :javascript
+              $('#tshirt_artwork').change(function() {
+                $('#artwork-file').val($(this).val().replace(/C:\\fakepath\\/,''));
+              });
+        .form-actions
+          = link_to "Preview Pre-Order", tshirt_preview_path(@tshirt), class: "btn btn-success btn-large", style: "margin-right: 1em"
+          = f.submit "Update My Tee", class: "btn btn-primary"
+          or
+          = link_to "Delete Tee", @tshirt, method: :delete, class: "btn btn-danger", confirm: "Are you sure?"
+  .span6
+    %ul.nav.nav-tabs
+      %li.active
+        = link_to "Preview Image", "#preview-image", :"data-toggle" => "tab"
+      %li
+        = link_to "Original Image", "#original-image", :"data-toggle" => "tab"
 
+    - if @tshirt.artwork.present?
+      .tab-content
+        .tab-pane.active#preview-image
+          - if @tshirt.artwork.preview.present?
+            .row
+              .offset1.span5
+                = image_tag @tshirt.artwork.preview, class: "span4"
+        .tab-pane#original-image
+          - if @tshirt.artwork.present?
+            .row
+              .offset1.span5
+                = image_tag @tshirt.artwork, class: "span4"
