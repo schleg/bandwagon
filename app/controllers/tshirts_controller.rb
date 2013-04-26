@@ -32,6 +32,8 @@ class TshirtsController < ApplicationController
     @tshirt = Tshirt.find params[:id]
     update_art_file_properties
     if @tshirt.update_attributes params[:tshirt]
+      transition = @tshirt.state_transitions.select{|s|s.to == @tshirt.state_requested.downcase}
+      transition.first.perform if transition.any?
       flash[:notice] = "Tee updated successfully" 
       respond_with @tshirt, location: edit_tshirt_path(@tshirt)
     else

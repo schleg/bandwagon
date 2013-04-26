@@ -12,7 +12,7 @@
 .row
   .span12
     = link_to "Change My Tee", edit_tshirt_path(@tshirt), class: "btn btn-primary"
-    = link_to "Submit for Approval", edit_tshirt_path(@tshirt), class: "btn btn-success"
+    = render partial: "state_buttons", locals: { tshirt: @tshirt }
 %hr/
 .row
   .span9

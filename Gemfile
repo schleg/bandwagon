@@ -31,6 +31,8 @@ group :development do
   gem 'debugger'
   gem 'binding_of_caller', '>= 0.7.1', :platforms => [:mri_19, :rbx]
   gem 'sqlite3'
+  gem 'ruby-graphviz'
+  gem 'jazz_hands'
 end
 gem 'pg'
 gem 'jquery-rails'
@@ -47,3 +49,4 @@ gem 'money-rails'
 gem 'carrierwave'
 gem 'mini_magick'
 gem 'fog', '~> 1.3.1'
+gem 'state_machine'

@@ -1,0 +1,4 @@
+- @tshirt.state_transitions.each do |transition|
+  = simple_form_for @tshirt, html: { style: "display: inline" } do |f|
+    = f.input :state_requested, as: :hidden, input_html: { value: transition.to }
+    = f.submit transition.event.to_s.titlecase, class: "btn"
