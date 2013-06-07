@@ -34,6 +34,11 @@ group :development do
   gem 'ruby-graphviz'
   gem 'jazz_hands'
 end
+group :development, :test do
+  gem 'pry'
+  gem 'pry-nav'
+  gem 'faker'
+end
 gem 'pg'
 gem 'jquery-rails'
 gem 'thin', '>= 1.5.0'

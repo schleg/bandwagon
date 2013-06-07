@@ -7,5 +7,8 @@ Bandwagon::Application.routes.draw do
   resources :tshirts do
     get :preview
   end
+  namespace :admin do
+    resources :tshirts
+  end
   root :to => "home#index"
 end
