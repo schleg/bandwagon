@@ -1,2 +1,23 @@
-- Tshirt.all.each do |tshirt|
-  = tshirt.title
+%h2
+  Tshirts
+%table.table
+  %tr
+    %th
+      Created
+    %th
+      State
+    %th
+      User
+    %th{style: "width: 100%"}
+      Title
+  - Tshirt.all.each do |tshirt|
+    %tr
+      %td{style: "white-space: nowrap"}
+        = "#{tshirt.created_at.to_s(:long)} (#{time_ago_in_words tshirt.created_at} ago)"
+      %td
+        = tshirt.state.upcase
+      %td
+        = tshirt.user.email
+      %td
+        = link_to tshirt.title, tshirt_preview_path(tshirt)
+

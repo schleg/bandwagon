@@ -2,8 +2,12 @@ require 'spec_helper'
 
 describe "Tshirt administration" do
 
+  before :each do
+    user = FactoryGirl.create :admin
+    sign_in_user user
+  end
+
   it "should allow an administrator to see a list of shirts for review" do
-    sign_in_user
     3.times do
       FactoryGirl.create :tshirt
     end
