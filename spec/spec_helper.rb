@@ -17,9 +17,12 @@ Spork.prefork do
     config.use_transactional_fixtures = true
     config.infer_base_class_for_anonymous_controllers = false
     config.order = "random"
-    config.before(:suite) do
-      DatabaseCleaner.strategy = :truncation
-    end
+    DatabaseCleaner.strategy = :truncation
+  end
+end
+
+Spork.each_run do
+  RSpec.configure do |config|
     config.before(:each) do
       DatabaseCleaner.start
     end
@@ -27,7 +30,4 @@ Spork.prefork do
       DatabaseCleaner.clean
     end
   end
-end
-
-Spork.each_run do
 end

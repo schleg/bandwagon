@@ -3,13 +3,15 @@ require 'spec_helper'
 describe "Tshirt administration" do
 
   before :each do
-    user = FactoryGirl.create :admin
-    sign_in_user user
+    @user = FactoryGirl.create :admin
+    sign_in_user @user
   end
 
   it "should allow an administrator to see a list of shirts for review" do
     3.times do
-      FactoryGirl.create :tshirt
+      tshirt = FactoryGirl.create :tshirt
+      tshirt.user = @user
+      tshirt.save
     end
     visit admin_tshirts_path
     page.should have_content("Tshirt #1")
@@ -17,6 +19,21 @@ describe "Tshirt administration" do
     page.should have_content("Tshirt #3")
   end
 
-  it "should allow an admin to approve a tshirt design"
+  it "should allow an admin to approve a tshirt design" do
+    3.times do
+      tshirt = FactoryGirl.create :tshirt
+      tshirt.user = @user
+      tshirt.save
+    end
+    visit admin_tshirts_path
+    t = Tshirt.last
+    t.state = 'submitted'
+    t.save
+    click_link t.title
+    click_button "Approve Tee"
+    Tshirt.last.state.should == 'published'
+  end
+
   it "should allow an admin to preview the generated tshirt template"
+
 end
