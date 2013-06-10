@@ -14,20 +14,20 @@ Spork.prefork do
     config.include(EmailSpec::Helpers)
     config.include(EmailSpec::Matchers)
     config.fixture_path = "#{::Rails.root}/spec/fixtures"
-    config.use_transactional_fixtures = true
+    config.use_transactional_fixtures = false
     config.infer_base_class_for_anonymous_controllers = false
     config.order = "random"
     DatabaseCleaner.strategy = :truncation
+    RSpec.configure do |config|
+      config.before(:each) do
+        DatabaseCleaner.start
+      end
+      config.after(:each) do
+        DatabaseCleaner.clean
+      end
+    end
   end
 end
 
 Spork.each_run do
-  RSpec.configure do |config|
-    config.before(:each) do
-      DatabaseCleaner.start
-    end
-    config.after(:each) do
-      DatabaseCleaner.clean
-    end
-  end
 end

@@ -1,9 +1,8 @@
 # Read about factories at https://github.com/thoughtbot/factory_girl
 
 FactoryGirl.define do
-  sequence(:email) { |e| "user_#{e}@example.com" }
   factory :user do
-    email { FactoryGirl.generate(:email) }
+    email { Faker::Internet::email }
     password { "password" }
     password_confirmation { "password" }
   end

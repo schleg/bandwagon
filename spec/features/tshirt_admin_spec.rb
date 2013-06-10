@@ -14,9 +14,9 @@ describe "Tshirt administration" do
       tshirt.save
     end
     visit admin_tshirts_path
-    page.should have_content("Tshirt #1")
-    page.should have_content("Tshirt #2")
-    page.should have_content("Tshirt #3")
+    Tshirt.all.each do |tshirt|
+      page.should have_content(tshirt.title)
+    end
   end
 
   it "should allow an admin to approve a tshirt design" do
