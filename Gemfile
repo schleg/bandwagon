@@ -42,6 +42,9 @@ group :development, :test do
   gem 'spork'
   gem 'foreman'
 end
+group :production do
+  gem 'unicorn'
+end
 gem 'pg'
 gem 'jquery-rails'
 gem 'thin', '>= 1.5.0'
