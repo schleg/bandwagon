@@ -14,4 +14,7 @@ class User < ActiveRecord::Base
 
   has_many :tshirts
 
+  def can_change_state_for(object)
+  end
+
 end

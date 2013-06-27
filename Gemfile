@@ -40,6 +40,7 @@ group :development, :test do
   gem 'pry-nav'
   gem 'faker'
   gem 'spork'
+  gem 'foreman'
 end
 gem 'pg'
 gem 'jquery-rails'

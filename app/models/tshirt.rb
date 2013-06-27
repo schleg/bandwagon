@@ -24,5 +24,29 @@ class Tshirt < ActiveRecord::Base
     event :unpublish do
       transition [:published] => :unpublished
     end
+
+    before_transition :submitted => :rejected do |tshirt, transition|
+      raise ArgumentError unless transition.args.first.is_a?(User)
+      tshirt.can_change_state? transition.args.first, transition.from, transition.to
+    end
+  end
+
+  def can_change_state?(user, from, to)
+    valid_transitions = []
+    if user.has_role? :admin
+      valid_transitions = [
+        ['submitted', 'rejected'],
+        ['submitted', 'published'],
+        ['rejected', 'submitted'],
+        ['published', 'unpublished'],
+        ['unpublished', 'submitted']
+      ]
+    else
+      valid_transitions = [
+        ['unpublished', 'submitted'],
+        ['rejected', 'submitted']
+      ]
+    end
+    valid_transitions.include? [from, to]
   end
 end
