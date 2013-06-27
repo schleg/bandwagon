@@ -8,8 +8,10 @@
       State
     %th
       User
-    %th{style: "width: 100%"}
+    %th
       Title
+    %th{style: "width: 100%"}
+      Transfer (PDF)
   - Tshirt.all.each do |tshirt|
     %tr
       %td{style: "white-space: nowrap"}
@@ -20,4 +22,5 @@
         = tshirt.user.email
       %td
         = link_to tshirt.title, tshirt_preview_path(tshirt)
-
+      %td
+        = link_to raw("11&times;17"), tshirt.artwork.transfer_11x17.url
