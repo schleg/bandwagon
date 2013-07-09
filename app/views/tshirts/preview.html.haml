@@ -14,23 +14,4 @@
     = link_to "Change My Tee", edit_tshirt_path(@tshirt), class: "btn btn-primary"
     = render partial: "state_buttons", locals: { tshirt: @tshirt }
 %hr/
-.row
-  .span9
-    %h2
-      = @tshirt.title
-    .row
-      .span4
-        %p
-          - if @tshirt.description.present?
-            = @tshirt.description
-      .span5
-        - if @tshirt.artwork.present?
-          = image_tag @tshirt.artwork.preview
-  .span3
-    %h3
-      Pre-Order This Tee!
-    = simple_form_for :order do |f|
-      = f.input :quantity, collection: 1..100, as: :select
-      = f.input :shirt, collection: ["Hanes Tagless", "Fruit of the Loom", "American Apparel"], as: :select
-      = f.input :size, collection: ["S", "M", "L", "XL", "XXL"], as: :select
-      = f.submit "Place My Pre-Order", class: "btn btn-primary btn-large"
+= render partial: "show"

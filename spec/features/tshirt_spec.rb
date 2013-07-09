@@ -1,9 +1,8 @@
 require 'spec_helper'
 
-describe "Tshirt management" do
+describe "Tshirt pre-ordering" do
 
   let(:user) { FactoryGirl.create :user }
-  let(:admin) { FactoryGirl.create :admin }
 
   before :each do
     sign_in_user user
@@ -11,42 +10,27 @@ describe "Tshirt management" do
 
   describe "by a user" do
 
-    it "should only allow a user to submit a tshirt for review by default" do
-      tshirt = FactoryGirl.create :tshirt
-      visit tshirt_preview_path(tshirt)
-      visible_states = page.all(".state-button").collect(&:value)
-      visible_states.should == ["Submit for Approval"]
+    describe "when the tshirt is published" do
+
+      it "should allow user to view the pre-order page" do
+        tshirt = FactoryGirl.create :tshirt
+        tshirt.submit
+        tshirt.reload
+        tshirt.approve
+        visit tshirt_path(tshirt)
+        page.current_path.should == tshirt_path(tshirt)
+      end
     end
 
-    it "should allow a user to submit a tshirt for review" do
-      tshirt = FactoryGirl.create :tshirt
-      visit tshirt_preview_path(tshirt)
-      click_button "Submit for Approval"
-      tshirt.reload
-      tshirt.state.should == 'submitted'
-    end
+    describe "when the tshirt is unpublished" do
 
-    it "should not allow a state change once a tshirt is being reviewed" do
-      tshirt = FactoryGirl.create :tshirt
-      visit tshirt_preview_path(tshirt)
-      click_button "Submit for Approval"
-      tshirt.reload
-      tshirt.state.should == "submitted"
-      visit tshirt_preview_path(tshirt)
-      visible_states = page.all(".state-button").collect(&:value)
-      visible_states.should == []
-    end
-
-    it "should allow user to resubmit a tshirt if rejected" do
-      tshirt = FactoryGirl.create :tshirt
-      tshirt.submit
-      tshirt.reload
-      tshirt.reject(admin)
-      tshirt.reload
-      tshirt.submit
-      tshirt.reload
-      tshirt.state.should == "submitted"
+      it "should not allow the user to view the pre-order page" do
+        tshirt = FactoryGirl.create :tshirt
+        tshirt.submit
+        visit tshirt_path(tshirt)
+        page.current_path.should == tshirt_path(tshirt)
+        page.should have_content(I18n.t(:tee_unavailable))
+      end
     end
   end
-
 end

@@ -4,14 +4,15 @@ class TshirtsController < ApplicationController
   
   before_filter :authenticate_user!, :except => [:show]
 
+  load_and_authorize_resource except: :show
+
   def new
-    @tshirt = Tshirt.new
+    respond_with @tshirt
   end
 
   def create
-    params[:tshirt].merge! user_id: current_user.id
-    @tshirt = Tshirt.new params[:tshirt]
     update_art_file_properties
+    @tshirt.user_id = current_user.id
     if @tshirt.save
       flash[:notice] = "Tee created successfully"
       respond_with @tshirt, location: tshirt_preview_path(@tshirt)
@@ -24,25 +25,29 @@ class TshirtsController < ApplicationController
     @tshirt = Tshirt.find params[:tshirt_id]
   end
 
-  def edit
+  def show
     @tshirt = Tshirt.find params[:id]
   end
 
+  def edit
+  end
+
   def update
-    @tshirt = Tshirt.find params[:id]
     update_art_file_properties
     if @tshirt.update_attributes params[:tshirt]
-      transition = @tshirt.state_transitions.detect{|s|s.to == @tshirt.state_requested.downcase}
-      transition.perform(current_user) if transition.present?
+      if params[:tshirt][:state_requested]
+        transition = @tshirt.state_transitions.
+          detect{|s|s.to == params[:tshirt][:state_requested].downcase}
+        transition.perform(current_user) if transition.present?
+      end
       flash[:notice] = "Tee updated successfully" 
       respond_with @tshirt, location: edit_tshirt_path(@tshirt)
     else
-      respond_with @tshirt
+      respond_with @tshirt, location: edit_tshirt_path(@tshirt)
     end
   end
 
   def destroy
-    @tshirt = Tshirt.find params[:id]
     @tshirt.destroy
     if @tshirt.destroyed?
       flash[:notice] = "Tee deleted successfully"

@@ -1,0 +1,5 @@
+- if @tshirt.available?
+  = render partial: "show"
+- else
+  .alert
+    =t :tee_unavailable

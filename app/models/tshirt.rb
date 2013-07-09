@@ -49,4 +49,8 @@ class Tshirt < ActiveRecord::Base
     end
     valid_transitions.include? [from, to]
   end
+
+  def available?
+    state == 'published'
+  end
 end
